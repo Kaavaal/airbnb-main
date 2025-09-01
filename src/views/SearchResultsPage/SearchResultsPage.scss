@@ -1,0 +1,32 @@
+@import "@/assets/styles/variables";
+
+.page-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: $white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.page-header {
+  border-bottom: 1px solid $border-color;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+
+  .header-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: $text-color-primary;
+  }
+}
+
+.filter-placeholder,
+.property-list-placeholder {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  color: $text-color-secondary;
+  border-radius: 8px;
+  margin-top: 15px;
+}
