@@ -6,11 +6,20 @@
         <span class="subtitle">Ages 13 or above</span>
       </div>
       <div class="counter">
-        <button class="counter-button" @click="decrement('adults')" :disabled="counts.adults <= 1">
+        <button
+          class="counter-button"
+          @click="emit('decrement', { type: 'adults', operation: 'decrement' })"
+          :disabled="props.initialCounts.adults <= 1"
+        >
           &ndash;
         </button>
-        <span class="count-value">{{ counts.adults }}</span>
-        <button class="counter-button" @click="increment('adults')">+</button>
+        <span class="count-value">{{ props.initialCounts.adults }}</span>
+        <button
+          class="counter-button"
+          @click="emit('increment', { type: 'adults', operation: 'increment' })"
+        >
+          +
+        </button>
       </div>
     </div>
 
@@ -22,13 +31,18 @@
       <div class="counter">
         <button
           class="counter-button"
-          @click="decrement('children')"
-          :disabled="counts.children === 0"
+          @click="emit('decrement', { type: 'children', operation: 'decrement' })"
+          :disabled="props.initialCounts.children === 0"
         >
           &ndash;
         </button>
-        <span class="count-value">{{ counts.children }}</span>
-        <button class="counter-button" @click="increment('children')">+</button>
+        <span class="count-value">{{ props.initialCounts.children }}</span>
+        <button
+          class="counter-button"
+          @click="emit('increment', { type: 'children', operation: 'increment' })"
+        >
+          +
+        </button>
       </div>
     </div>
 
@@ -40,13 +54,18 @@
       <div class="counter">
         <button
           class="counter-button"
-          @click="decrement('infants')"
-          :disabled="counts.infants === 0"
+          @click="emit('decrement', { type: 'infants', operation: 'decrement' })"
+          :disabled="props.initialCounts.infants === 0"
         >
           &ndash;
         </button>
-        <span class="count-value">{{ counts.infants }}</span>
-        <button class="counter-button" @click="increment('infants')">+</button>
+        <span class="count-value">{{ props.initialCounts.infants }}</span>
+        <button
+          class="counter-button"
+          @click="emit('increment', { type: 'infants', operation: 'increment' })"
+        >
+          +
+        </button>
       </div>
     </div>
 
@@ -56,49 +75,34 @@
         <a href="#" class="subtitle-link">Bringing a service animal?</a>
       </div>
       <div class="counter">
-        <button class="counter-button" @click="decrement('pets')" :disabled="counts.pets === 0">
+        <button
+          class="counter-button"
+          @click="emit('decrement', { type: 'pets', operation: 'decrement' })"
+          :disabled="props.initialCounts.pets === 0"
+        >
           &ndash;
         </button>
-        <span class="count-value">{{ counts.pets }}</span>
-        <button class="counter-button" @click="increment('pets')">+</button>
+        <span class="count-value">{{ props.initialCounts.pets }}</span>
+        <button
+          class="counter-button"
+          @click="emit('increment', { type: 'pets', operation: 'increment' })"
+        >
+          +
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, computed, watch } from 'vue'
-
-const emit = defineEmits(['update-guests'])
-
-const counts = reactive({
-  adults: 1,
-  children: 0,
-  infants: 0,
-  pets: 0,
+const props = defineProps({
+  initialCounts: {
+    type: Object,
+    required: true,
+  },
 })
 
-const totalGuests = computed(() => counts.adults + counts.children)
-
-watch(
-  totalGuests,
-  (newTotal) => {
-    emit('update-guests', newTotal)
-  },
-  { immediate: true },
-)
-
-const increment = (type) => {
-  counts[type]++
-}
-
-const decrement = (type) => {
-  if (type === 'adults' && counts.adults > 1) {
-    counts.adults--
-  } else if (type !== 'adults' && counts[type] > 0) {
-    counts[type]--
-  }
-}
+const emit = defineEmits(['increment', 'decrement'])
 </script>
 
 <style lang="scss" scoped>

@@ -80,6 +80,44 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .value-input {
+    font-size: 14px;
+    color: $text-color-primary;
+    border: none;
+    padding-right: 30px;
+    margin: 0;
+    background-color: transparent;
+    width: 100%;
+    font-family: inherit;
+
+    &::placeholder {
+      color: $text-color-secondary;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .clear-button {
+    position: absolute;
+    right: 0;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: $text-color-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .search-item.with-button {
@@ -103,7 +141,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ff385c;
+  background-color: $red;
   border: none;
   border-radius: 50%;
   width: 50px;
@@ -133,7 +171,7 @@
   }
 
   &:hover {
-    background-color: darken(#ff385c, 10%);
+    background-color: darken($red, 10%);
   }
 
   .is-active & {
@@ -141,4 +179,3 @@
     border-radius: 25px;
   }
 }
-

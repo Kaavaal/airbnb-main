@@ -1,0 +1,99 @@
+@import '@/assets/styles/variables';
+
+.property-card {
+  cursor: pointer;
+
+  .image-container {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 12px;
+
+    .property-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .guest-favorite-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background-color: $white;
+      color: $text-color-primary;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .like-button {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+
+      .heart-icon {
+        width: 24px;
+        height: 24px;
+        stroke: $white;
+        stroke-width: 2;
+        fill: rgba(0,0,0,0.5);
+        transition: all 0.2s ease;
+
+        &.liked {
+          fill: $red;
+          stroke: $red;
+        }
+      }
+    }
+  }
+
+  &:hover .property-image {
+    transform: scale(1.05);
+  }
+
+  .info-container {
+    .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: $text-color-primary;
+      margin: 0 0 4px 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .price-rating {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      color: $text-color-secondary;
+
+      .price {
+        font-weight: 300;
+      }
+
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 600;
+        color: $text-color-primary;
+
+        .star-icon {
+          width: 14px;
+          height: 14px;
+          fill: $text-color-primary;
+        }
+      }
+    }
+  }
+}

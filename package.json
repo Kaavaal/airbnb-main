@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vuepic/vue-datepicker": "^11.0.2",
     "lucide-vue-next": "^0.542.0",
     "pinia": "^3.0.3",
     "vue": "^3.5.18"

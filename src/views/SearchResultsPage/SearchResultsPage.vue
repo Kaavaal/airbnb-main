@@ -1,20 +1,25 @@
 <template>
   <div class="page-container">
-    <header class="page-header">
-      <h1 class="header-title">Our Stays</h1>
-    </header>
-
-    <main class="content-area">
-      <div class="property-list-placeholder">
-        <p>cards</p>
-      </div>
-    </main>
+    <h1 class="header-title">Stays in Warsaw</h1>
+    <PropertyList @show-details="openModal" />
+    <PropertyModal v-if="selectedProperty" :property="selectedProperty" @close="closeModal" />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-const isModalVisible = ref(false)
+import PropertyList from '@/components/PropertyList/PropertyList.vue'
+import PropertyModal from '@/components/PropertyModal/PropertyModal.vue'
+
+const selectedProperty = ref(null)
+
+const openModal = (property) => {
+  selectedProperty.value = property
+}
+
+const closeModal = () => {
+  selectedProperty.value = null
+}
 </script>
 
 <style lang="scss" scoped src="./SearchResultsPage.scss"></style>

@@ -7,7 +7,38 @@
         @click="setActiveSection('where')"
       >
         <span class="label">Where</span>
-        <span class="value">Search destinations</span>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            class="value-input"
+            placeholder="Search destinations"
+            v-model="searchQuery"
+          />
+          <button
+            v-if="searchQuery && activeSection === 'where'"
+            class="clear-button"
+            @click.stop="clearSearchQuery"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 32 32"
+              aria-hidden="true"
+              role="presentation"
+              focusable="false"
+              style="
+                display: block;
+                fill: none;
+                height: 12px;
+                width: 12px;
+                stroke: currentcolor;
+                stroke-width: 4;
+                overflow: visible;
+              "
+            >
+              <path d="m6 6 20 20M26 6 6 26"></path>
+            </svg>
+          </button>
+        </div>
       </div>
       <div
         class="search-item"
@@ -15,7 +46,7 @@
         @click="setActiveSection('checkin')"
       >
         <span class="label">Check in</span>
-        <span class="value">Add dates</span>
+        <span class="value">{{ checkInDisplayValue }}</span>
       </div>
       <div
         class="search-item"
@@ -23,7 +54,7 @@
         @click="setActiveSection('checkout')"
       >
         <span class="label">Check out</span>
-        <span class="value">Add dates</span>
+        <span class="value">{{ checkOutDisplayValue }}</span>
       </div>
       <div
         class="search-item with-button"
@@ -46,51 +77,52 @@
         </button>
       </div>
     </div>
-    <GuestSelectorPanel v-if="activeSection === 'who'" @update-guests="handleGuestUpdate" />
+    <GuestSelectorPanel
+      v-if="activeSection === 'who'"
+      :initial-counts="guestCounts"
+      @increment="handleGuestChange"
+      @decrement="handleGuestChange"
+    />
+    <DatePickerPanel
+      v-if="activeSection === 'checkin' || activeSection === 'checkout'"
+      :initial-dates="dateRange"
+      @update-dates="handleDateUpdate"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import GuestSelectorPanel from './GuestSelectorPanel.vue'
+import { ref } from 'vue'
+import { useSearchState } from '@/composables/useSearchState'
+import { useClickOutside } from '@/composables/useClickOutside'
+
+import GuestSelectorPanel from '@/components/PropertySearch/GuestSelectorPanel.vue'
+import DatePickerPanel from '@/components/DatePickerPanel/DatePickerPanel.vue'
 
 const activeSection = ref(null)
-const totalGuests = ref(0)
 const searchContainerRef = ref(null)
+
+const {
+  searchQuery,
+  guestCounts,
+  handleGuestChange,
+  handleDateUpdate,
+  checkInDisplayValue,
+  checkOutDisplayValue,
+  guestDisplayValue,
+  clearSearchQuery,
+  dateRange,
+} = useSearchState()
 
 const setActiveSection = (sectionName) => {
   activeSection.value = activeSection.value === sectionName ? null : sectionName
 }
 
-const handleGuestUpdate = (count) => {
-  totalGuests.value = count
-}
-
-const guestDisplayValue = computed(() => {
-  if (totalGuests.value === 0) {
-    return 'Add guests'
-  }
-  if (totalGuests.value === 1) {
-    return '1 guest'
-  }
-  return `${totalGuests.value} guests`
-})
-
-const handleClickOutside = (event) => {
-  if (searchContainerRef.value && !searchContainerRef.value.contains(event.target)) {
-    activeSection.value = null
-  }
-}
-
-onMounted(() => {
-  document.addEventListener('mousedown', handleClickOutside)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('mousedown', handleClickOutside)
+useClickOutside(searchContainerRef, () => {
+  activeSection.value = null
 })
 </script>
 
 <style lang="scss" scoped>
-@import './PropertySearch.scss';
+@import '@/components/PropertySearch/PropertySearch.scss';
 </style>

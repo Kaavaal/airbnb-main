@@ -1,0 +1,43 @@
+@import '@/assets/styles/variables';
+
+.date-picker-panel {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: $white;
+  border-radius: 32px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+  padding: 16px 24px 24px 24px;
+  z-index: 10;
+
+  :deep(.dp__main) {
+    --dp-background-color: #{$white};
+    --dp-text-color: #{$text-color-primary};
+    --dp-hover-color: #f0f0f0;
+    --dp-primary-color: #{$text-color-primary};
+    --dp-border-radius: 50%;
+    --dp-font-family: inherit;
+    --dp-font-size: 14px;
+    --dp-range-color: #{$background-secondary};
+    border: none;
+  }
+
+  :deep(.dp__calendar_header) {
+    font-weight: 600;
+  }
+
+  :deep(.dp__menu) {
+    border: none;
+  }
+
+  :deep(.dp__action_row) {
+    display: none;
+  }
+
+  :deep(.dp__range_start),
+  :deep(.dp__range_end) {
+    background-color: var(--dp-primary-color);
+    color: $white;
+  }
+}
