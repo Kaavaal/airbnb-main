@@ -7,38 +7,37 @@
         @click="setActiveSection('where')"
       >
         <span class="label">Where</span>
-        <div class="input-wrapper">
-          <input
-            type="text"
-            class="value-input"
-            placeholder="Search destinations"
-            v-model="searchQuery"
-          />
-          <button
-            v-if="searchQuery && activeSection === 'where'"
-            class="clear-button"
-            @click.stop="clearSearchQuery"
+        <input
+          type="text"
+          class="value-input"
+          placeholder="Search destinations"
+          v-model="searchState.searchQuery.value"
+          @keydown.enter="executeSearch"
+        />
+        <button
+          v-if="searchState.searchQuery.value && activeSection === 'where'"
+          class="clear-button"
+          @click.stop="searchState.clearSearchQuery"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+              display: block;
+              fill: none;
+              height: 12px;
+              width: 12px;
+              stroke: currentcolor;
+              stroke-width: 4;
+              overflow: visible;
+            "
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 32 32"
-              aria-hidden="true"
-              role="presentation"
-              focusable="false"
-              style="
-                display: block;
-                fill: none;
-                height: 12px;
-                width: 12px;
-                stroke: currentcolor;
-                stroke-width: 4;
-                overflow: visible;
-              "
-            >
-              <path d="m6 6 20 20M26 6 6 26"></path>
-            </svg>
-          </button>
-        </div>
+            <path d="m6 6 20 20M26 6 6 26"></path>
+          </svg>
+        </button>
       </div>
       <div
         class="search-item"
@@ -46,7 +45,7 @@
         @click="setActiveSection('checkin')"
       >
         <span class="label">Check in</span>
-        <span class="value">{{ checkInDisplayValue }}</span>
+        <span class="value">{{ searchState.checkInDisplayValue.value }}</span>
       </div>
       <div
         class="search-item"
@@ -54,7 +53,7 @@
         @click="setActiveSection('checkout')"
       >
         <span class="label">Check out</span>
-        <span class="value">{{ checkOutDisplayValue }}</span>
+        <span class="value">{{ searchState.checkOutDisplayValue.value }}</span>
       </div>
       <div
         class="search-item with-button"
@@ -63,9 +62,9 @@
       >
         <div class="search-item-content">
           <span class="label">Who</span>
-          <span class="value">{{ guestDisplayValue }}</span>
+          <span class="value">{{ searchState.guestDisplayValue.value }}</span>
         </div>
-        <button class="search-button">
+        <button class="search-button" @click.stop="executeSearch">
           <svg class="search-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
             <g fill="none">
               <path
@@ -79,14 +78,14 @@
     </div>
     <GuestSelectorPanel
       v-if="activeSection === 'who'"
-      :initial-counts="guestCounts"
-      @increment="handleGuestChange"
-      @decrement="handleGuestChange"
+      :initial-counts="searchState.guestCounts"
+      @increment="searchState.handleGuestChange"
+      @decrement="searchState.handleGuestChange"
     />
     <DatePickerPanel
       v-if="activeSection === 'checkin' || activeSection === 'checkout'"
-      :initial-dates="dateRange"
-      @update-dates="handleDateUpdate"
+      :initial-dates="searchState.dateRange.value"
+      @update-dates="searchState.handleDateUpdate"
     />
   </div>
 </template>
@@ -95,27 +94,29 @@
 import { ref } from 'vue'
 import { useSearchState } from '@/composables/useSearchState'
 import { useClickOutside } from '@/composables/useClickOutside'
+import { usePropertyStore } from '@/stores/propertyStore'
 
 import GuestSelectorPanel from '@/components/PropertySearch/GuestSelectorPanel.vue'
 import DatePickerPanel from '@/components/DatePickerPanel/DatePickerPanel.vue'
 
 const activeSection = ref(null)
 const searchContainerRef = ref(null)
+const propertyStore = usePropertyStore()
 
-const {
-  searchQuery,
-  guestCounts,
-  handleGuestChange,
-  handleDateUpdate,
-  checkInDisplayValue,
-  checkOutDisplayValue,
-  guestDisplayValue,
-  clearSearchQuery,
-  dateRange,
-} = useSearchState()
+const searchState = useSearchState()
 
 const setActiveSection = (sectionName) => {
   activeSection.value = activeSection.value === sectionName ? null : sectionName
+}
+
+const executeSearch = () => {
+  propertyStore.applyFilters({
+    searchQuery: searchState.searchQuery.value,
+    guests: searchState.guestCounts.adults + searchState.guestCounts.children,
+    checkin: searchState.dates.checkin,
+    checkout: searchState.dates.checkout,
+  })
+  activeSection.value = null
 }
 
 useClickOutside(searchContainerRef, () => {

@@ -1,7 +1,7 @@
 <template>
   <header class="app-header">
     <div class="top-bar">
-      <div class="left-section">
+      <div class="left-section" @click="reloadPage">
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg"
           alt="Airbnb Logo"
@@ -133,6 +133,10 @@ import PropertySearch from '@/components/PropertySearch/PropertySearch.vue'
 const activeLink = ref('Homes')
 const setActiveLink = (linkName) => {
   activeLink.value = linkName
+}
+
+const reloadPage = () => {
+  window.location.reload()
 }
 </script>
 

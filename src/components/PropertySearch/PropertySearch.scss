@@ -108,7 +108,7 @@
 
   .clear-button {
     position: absolute;
-    right: 0;
+    right: 10px;
     background-color: transparent;
     border: none;
     padding: 0;
@@ -125,7 +125,7 @@
   flex-direction: row;
   align-items: center;
   padding: 0 9px 0 24px;
-  flex-basis: 220px;
+  flex-basis: 280px;
   flex-grow: 0;
 }
 
@@ -141,7 +141,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $red;
+  background-color: #ff385c;
   border: none;
   border-radius: 50%;
   width: 50px;
@@ -171,7 +171,7 @@
   }
 
   &:hover {
-    background-color: darken($red, 10%);
+    background-color: darken(#ff385c, 10%);
   }
 
   .is-active & {
