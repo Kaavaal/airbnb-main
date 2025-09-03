@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <h1 class="header-title">Stays in Warsaw</h1>
+    <h1 class="header-title">Stays in Poland</h1>
     <PropertyList @show-details="openModal" />
     <PropertyModal v-if="selectedProperty" :property="selectedProperty" @close="closeModal" />
   </div>

@@ -7,22 +7,20 @@
         @click="setActiveSection('where')"
       >
         <span class="label">Where</span>
-        <div class="input-wrapper">
-          <input
-            type="text"
-            class="value-input"
-            placeholder="Search destinations"
-            v-model="searchState.searchQuery.value"
-            @keydown.enter="executeSearch"
-          />
-          <button
-            v-if="searchState.searchQuery.value && activeSection === 'where'"
-            class="clear-button"
-            @click.stop="searchState.clearSearchQuery"
-          >
-            <IconClose />
-          </button>
-        </div>
+        <input
+          type="text"
+          class="value-input"
+          placeholder="Search destinations"
+          v-model="searchState.searchQuery.value"
+          @keydown.enter="executeSearch"
+        />
+        <button
+          v-if="searchState.searchQuery.value && activeSection === 'where'"
+          class="clear-button"
+          @click.stop="searchState.clearSearchQuery"
+        >
+          <IconClose />
+        </button>
       </div>
       <div
         class="search-item"
@@ -63,19 +61,25 @@
     />
     <DatePickerPanel
       v-if="activeSection === 'checkin' || activeSection === 'checkout'"
-      :initial-dates="searchState.dateRange.value"
-      @update-dates="searchState.handleDateUpdate"
+      v-model="searchState.dateRange.value"
+    />
+    <LocationPanel
+      v-if="activeSection === 'where'"
+      :query="searchState.searchQuery.value"
+      :locations="uniqueLocations"
+      @select-location="handleLocationSelect"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useSearchState } from '@/composables/useSearchState'
 import { useClickOutside } from '@/composables/useClickOutside'
 import { usePropertyStore } from '@/stores/propertyStore'
 
 import GuestSelectorPanel from '@/components/PropertySearch/GuestSelectorPanel.vue'
+import LocationPanel from '@/components/PropertySearch/LocationPanel.vue'
 import DatePickerPanel from '@/components/DatePickerPanel/DatePickerPanel.vue'
 import IconClose from '@/components/icons/IconClose.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
@@ -86,8 +90,21 @@ const propertyStore = usePropertyStore()
 
 const searchState = useSearchState()
 
+const uniqueLocations = computed(() => {
+  const locations = propertyStore.properties.map((p) => p.location)
+  return [...new Set(locations)].map((location) => ({
+    city: location,
+    country: 'Poland',
+  }))
+})
+
 const setActiveSection = (sectionName: string) => {
   activeSection.value = activeSection.value === sectionName ? null : sectionName
+}
+
+const handleLocationSelect = (location: string) => {
+  searchState.searchQuery.value = location
+  activeSection.value = 'checkin'
 }
 
 const executeSearch = () => {

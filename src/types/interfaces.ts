@@ -63,3 +63,8 @@ export interface IFilters {
   checkin: Date | null
   checkout: Date | null
 }
+
+export interface ILocation {
+  city: string
+  country: string
+}

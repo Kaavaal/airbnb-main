@@ -1,0 +1,63 @@
+@import '@/assets/styles/variables';
+
+.location-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 400px;
+  background-color: $white;
+  border-radius: 32px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  padding: 12px 0;
+  z-index: 10;
+}
+
+.location-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.location-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 24px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: $background-secondary;
+  }
+
+  .icon-wrapper {
+    background-color: $background-secondary;
+    border-radius: 8px;
+    padding: 12px;
+    margin-right: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-color-secondary;
+  }
+
+  .text-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .city {
+      font-weight: 600;
+    }
+
+    .country {
+      font-size: 14px;
+      color: $text-color-secondary;
+    }
+  }
+}
+
+.no-results {
+  padding: 16px 24px;
+  color: $text-color-secondary;
+  text-align: center;
+}
+
