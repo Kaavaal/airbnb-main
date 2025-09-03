@@ -11,19 +11,7 @@
     <div class="load-more-container" v-if="hasMore">
       <button @click="loadMore" class="load-more-button">
         <span>Show More</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
+        <IconChevronRight />
       </button>
     </div>
   </div>
@@ -35,8 +23,10 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
+import type { Ref, ComputedRef } from 'vue'
 import { usePropertyStore } from '@/stores/propertyStore'
 import PropertyCard from '@/components/PropertyCard/PropertyCard.vue'
+import IconChevronRight from '@/components/icons/IconChevronRight.vue'
 import type { IProperty } from '@/types/interfaces'
 
 defineEmits<{
@@ -45,18 +35,18 @@ defineEmits<{
 
 const store = usePropertyStore()
 
-const PAGE_SIZE = 16
-const visibleCount = ref(PAGE_SIZE)
+const PAGE_SIZE: number = 16
+const visibleCount: Ref<number> = ref(PAGE_SIZE)
 
-const paginatedProperties = computed(() => {
+const paginatedProperties: ComputedRef<IProperty[]> = computed(() => {
   return store.filteredProperties.slice(0, visibleCount.value)
 })
 
-const loadMore = () => {
+const loadMore = (): void => {
   visibleCount.value += PAGE_SIZE
 }
 
-const hasMore = computed(() => {
+const hasMore: ComputedRef<boolean> = computed(() => {
   return visibleCount.value < store.filteredProperties.length
 })
 

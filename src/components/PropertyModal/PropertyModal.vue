@@ -2,9 +2,7 @@
   <div class="modal-overlay" @click.self="$emit('close')">
     <div class="modal-content">
       <button class="close-button" @click="$emit('close')">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-          <path d="m6 6 20 20M26 6 6 26"></path>
-        </svg>
+        <IconCloseModal />
       </button>
 
       <div class="image-section">
@@ -66,6 +64,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import type { IProperty } from '@/types/interfaces'
+import IconCloseModal from '@/components/icons/IconCloseModal.vue'
 
 defineProps({
   property: {

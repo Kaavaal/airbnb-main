@@ -7,37 +7,22 @@
         @click="setActiveSection('where')"
       >
         <span class="label">Where</span>
-        <input
-          type="text"
-          class="value-input"
-          placeholder="Search destinations"
-          v-model="searchState.searchQuery.value"
-          @keydown.enter="executeSearch"
-        />
-        <button
-          v-if="searchState.searchQuery.value && activeSection === 'where'"
-          class="clear-button"
-          @click.stop="searchState.clearSearchQuery"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 32 32"
-            aria-hidden="true"
-            role="presentation"
-            focusable="false"
-            style="
-              display: block;
-              fill: none;
-              height: 12px;
-              width: 12px;
-              stroke: currentcolor;
-              stroke-width: 4;
-              overflow: visible;
-            "
+        <div class="input-wrapper">
+          <input
+            type="text"
+            class="value-input"
+            placeholder="Search destinations"
+            v-model="searchState.searchQuery.value"
+            @keydown.enter="executeSearch"
+          />
+          <button
+            v-if="searchState.searchQuery.value && activeSection === 'where'"
+            class="clear-button"
+            @click.stop="searchState.clearSearchQuery"
           >
-            <path d="m6 6 20 20M26 6 6 26"></path>
-          </svg>
-        </button>
+            <IconClose />
+          </button>
+        </div>
       </div>
       <div
         class="search-item"
@@ -65,13 +50,7 @@
           <span class="value">{{ searchState.guestDisplayValue.value }}</span>
         </div>
         <button class="search-button" @click.stop="executeSearch">
-          <svg class="search-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-            <g fill="none">
-              <path
-                d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9"
-              ></path>
-            </g>
-          </svg>
+          <IconSearch />
           <span v-if="activeSection !== null">Search</span>
         </button>
       </div>
@@ -98,6 +77,8 @@ import { usePropertyStore } from '@/stores/propertyStore'
 
 import GuestSelectorPanel from '@/components/PropertySearch/GuestSelectorPanel.vue'
 import DatePickerPanel from '@/components/DatePickerPanel/DatePickerPanel.vue'
+import IconClose from '@/components/icons/IconClose.vue'
+import IconSearch from '@/components/icons/IconSearch.vue'
 
 const activeSection = ref<string | null>(null)
 const searchContainerRef = ref<HTMLElement | null>(null)

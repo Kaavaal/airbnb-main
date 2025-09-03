@@ -1,91 +1,23 @@
 <template>
   <div class="guest-selector-panel">
-    <div class="guest-row">
+    <div v-for="category in guestCategories" :key="category.id" class="guest-row">
       <div class="guest-info">
-        <span class="title">Adults</span>
-        <span class="subtitle">Ages 13 or above</span>
+        <span class="title">{{ category.title }}</span>
+        <a v-if="category.isLink" href="#" class="subtitle-link">{{ category.subtitle }}</a>
+        <span v-else class="subtitle">{{ category.subtitle }}</span>
       </div>
       <div class="counter">
         <button
           class="counter-button"
-          @click="emit('decrement', { type: 'adults', operation: 'decrement' })"
-          :disabled="props.initialCounts.adults <= 1"
+          @click="emit('decrement', { type: category.id, operation: 'decrement' })"
+          :disabled="props.initialCounts[category.id] <= category.min"
         >
           &ndash;
         </button>
-        <span class="count-value">{{ props.initialCounts.adults }}</span>
+        <span class="count-value">{{ props.initialCounts[category.id] }}</span>
         <button
           class="counter-button"
-          @click="emit('increment', { type: 'adults', operation: 'increment' })"
-        >
-          +
-        </button>
-      </div>
-    </div>
-
-    <div class="guest-row">
-      <div class="guest-info">
-        <span class="title">Children</span>
-        <span class="subtitle">Ages 2–12</span>
-      </div>
-      <div class="counter">
-        <button
-          class="counter-button"
-          @click="emit('decrement', { type: 'children', operation: 'decrement' })"
-          :disabled="props.initialCounts.children === 0"
-        >
-          &ndash;
-        </button>
-        <span class="count-value">{{ props.initialCounts.children }}</span>
-        <button
-          class="counter-button"
-          @click="emit('increment', { type: 'children', operation: 'increment' })"
-        >
-          +
-        </button>
-      </div>
-    </div>
-
-    <div class="guest-row">
-      <div class="guest-info">
-        <span class="title">Infants</span>
-        <span class="subtitle">Under 2</span>
-      </div>
-      <div class="counter">
-        <button
-          class="counter-button"
-          @click="emit('decrement', { type: 'infants', operation: 'decrement' })"
-          :disabled="props.initialCounts.infants === 0"
-        >
-          &ndash;
-        </button>
-        <span class="count-value">{{ props.initialCounts.infants }}</span>
-        <button
-          class="counter-button"
-          @click="emit('increment', { type: 'infants', operation: 'increment' })"
-        >
-          +
-        </button>
-      </div>
-    </div>
-
-    <div class="guest-row">
-      <div class="guest-info">
-        <span class="title">Pets</span>
-        <a href="#" class="subtitle-link">Bringing a service animal?</a>
-      </div>
-      <div class="counter">
-        <button
-          class="counter-button"
-          @click="emit('decrement', { type: 'pets', operation: 'decrement' })"
-          :disabled="props.initialCounts.pets === 0"
-        >
-          &ndash;
-        </button>
-        <span class="count-value">{{ props.initialCounts.pets }}</span>
-        <button
-          class="counter-button"
-          @click="emit('increment', { type: 'pets', operation: 'increment' })"
+          @click="emit('increment', { type: category.id, operation: 'increment' })"
         >
           +
         </button>
@@ -109,6 +41,13 @@ const emit = defineEmits<{
   (e: 'increment', payload: { type: keyof IGuestCounts; operation: 'increment' }): void
   (e: 'decrement', payload: { type: keyof IGuestCounts; operation: 'decrement' }): void
 }>()
+
+const guestCategories = [
+  { id: 'adults', title: 'Adults', subtitle: 'Ages 13 or above', min: 1, isLink: false },
+  { id: 'children', title: 'Children', subtitle: 'Ages 2–12', min: 0, isLink: false },
+  { id: 'infants', title: 'Infants', subtitle: 'Under 2', min: 0, isLink: false },
+  { id: 'pets', title: 'Pets', subtitle: 'Bringing a service animal?', min: 0, isLink: true },
+]
 </script>
 
 <style lang="scss" scoped src="./GuestSelectorPanel.scss"></style>

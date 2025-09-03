@@ -6,14 +6,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import PropertyList from '@/components/PropertyList/PropertyList.vue'
 import PropertyModal from '@/components/PropertyModal/PropertyModal.vue'
+import type { IProperty } from '@/types/interfaces'
 
-const selectedProperty = ref(null)
+const selectedProperty = ref<IProperty | null>(null)
 
-const openModal = (property) => {
+const openModal = (property: IProperty) => {
   selectedProperty.value = property
 }
 
