@@ -1,7 +1,7 @@
 <template>
   <div class="date-picker-panel">
     <VueDatePicker
-      v-model="date"
+      :model-value="props.initialDates"
       range
       inline
       multi-calendars
@@ -14,27 +14,26 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import type { PropType } from 'vue'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const props = defineProps({
   initialDates: {
-    type: Array,
+    type: Array as PropType<(Date | null)[]>,
     default: () => [],
   },
 })
 
-const emit = defineEmits(['update-dates'])
+const emit = defineEmits<{
+  (e: 'update-dates', value: Date[] | null): void
+}>()
 
-const date = ref(props.initialDates)
-
-const handleDateUpdate = (value) => {
+const handleDateUpdate = (value: Date[] | null) => {
   emit('update-dates', value)
 }
 </script>
 
-<style lang="scss" scoped>
-@import './DatePickerPanel.scss';
-</style>
+<style lang="scss" scoped src="./DatePickerPanel.scss"></style>

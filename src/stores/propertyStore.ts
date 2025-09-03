@@ -1,11 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { mockProperties } from '@/data/mockProperties'
+import { mockProperties } from '@/data/mockProperties.ts'
 import { isWithinInterval } from 'date-fns'
+import type { IProperty, IFilters } from '@/types/interfaces'
+import type { Ref } from 'vue'
 
 export const usePropertyStore = defineStore('property', () => {
-  const properties = ref(mockProperties)
-  const filters = ref({
+  const properties: Ref<IProperty[]> = ref(mockProperties as IProperty[])
+
+  const filters = ref<IFilters>({
     searchQuery: '',
     guests: 0,
     checkin: null,
@@ -41,11 +44,8 @@ export const usePropertyStore = defineStore('property', () => {
     })
   })
 
-  function applyFilters(newFilters) {
-    filters.value.searchQuery = newFilters.searchQuery
-    filters.value.guests = newFilters.guests
-    filters.value.checkin = newFilters.checkin
-    filters.value.checkout = newFilters.checkout
+  function applyFilters(newFilters: Partial<IFilters>) {
+    filters.value = { ...filters.value, ...newFilters }
   }
 
   return {

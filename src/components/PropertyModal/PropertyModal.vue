@@ -63,15 +63,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { PropType } from 'vue'
+import type { IProperty } from '@/types/interfaces'
+
 defineProps({
   property: {
-    type: Object,
+    type: Object as PropType<IProperty>,
     required: true,
   },
 })
 
-defineEmits(['close'])
+defineEmits<{
+  (e: 'close'): void
+}>()
 </script>
 
 <style lang="scss" scoped src="./PropertyModal.scss"></style>

@@ -18,64 +18,16 @@
 
         <div class="tab-content">
           <div v-if="activeTab === 'inspiration'" class="content-grid">
-            <a href="#">
-              <span class="link-title">Family travel hub</span>
-              <span class="link-subtitle">Tips and inspiration</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Family budget travel</span>
-              <span class="link-subtitle">Get there for less</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Vacation ideas</span>
-              <span class="link-subtitle">Make it special, without making it a special trip</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Travel Europe on a budget</span>
-              <span class="link-subtitle">Explore nature with the family</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Outdoor adventure</span>
-              <span class="link-subtitle">Explore nature with the family</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Bucket list: national parks</span>
-              <span class="link-subtitle">Must-see parks for family travel</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Kid-friendly state parks</span>
-              <span class="link-subtitle">Check out these family-friendly historic stays</span>
+            <a v-for="link in inspirationLinks" :key="link.title" href="#">
+              <span class="link-title">{{ link.title }}</span>
+              <span class="link-subtitle">{{ link.subtitle }}</span>
             </a>
           </div>
 
           <div v-if="activeTab === 'apartments'" class="content-grid">
-            <a href="#">
-              <span class="link-title">New York</span>
-              <span class="link-subtitle">New York</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Los Angeles</span>
-              <span class="link-subtitle">California</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Chicago</span>
-              <span class="link-subtitle">Illinois</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Houston</span>
-              <span class="link-subtitle">Texas</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Phoenix</span>
-              <span class="link-subtitle">Arizona</span>
-            </a>
-            <a href="#">
-              <span class="link-title">Philadelphia</span>
-              <span class="link-subtitle">Pennsylvania</span>
-            </a>
-            <a href="#">
-              <span class="link-title">San Antonio</span>
-              <span class="link-subtitle">Texas</span>
+            <a v-for="link in apartmentLinks" :key="link.title" href="#">
+              <span class="link-title">{{ link.title }}</span>
+              <span class="link-subtitle">{{ link.subtitle }}</span>
             </a>
           </div>
         </div>
@@ -88,14 +40,37 @@
   </footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import type { Ref } from 'vue'
 
-const activeTab = ref('inspiration')
+type TabName = 'inspiration' | 'apartments'
 
-const selectTab = (tabName) => {
+const activeTab: Ref<TabName> = ref('inspiration')
+
+const selectTab = (tabName: TabName) => {
   activeTab.value = tabName
 }
+
+const inspirationLinks = [
+  { title: 'Family travel hub', subtitle: 'Tips and inspiration' },
+  { title: 'Family budget travel', subtitle: 'Get there for less' },
+  { title: 'Vacation ideas', subtitle: 'Make it special, without making it a special trip' },
+  { title: 'Travel Europe on a budget', subtitle: 'Explore nature with the family' },
+  { title: 'Outdoor adventure', subtitle: 'Explore nature with the family' },
+  { title: 'Bucket list: national parks', subtitle: 'Must-see parks for family travel' },
+  { title: 'Kid-friendly state parks', subtitle: 'Check out these family-friendly historic stays' },
+]
+
+const apartmentLinks = [
+  { title: 'New York', subtitle: 'New York' },
+  { title: 'Los Angeles', subtitle: 'California' },
+  { title: 'Chicago', subtitle: 'Illinois' },
+  { title: 'Houston', subtitle: 'Texas' },
+  { title: 'Phoenix', subtitle: 'Arizona' },
+  { title: 'Philadelphia', subtitle: 'Pennsylvania' },
+  { title: 'San Antonio', subtitle: 'Texas' },
+]
 </script>
 
 <style lang="scss" scoped src="./TheFooter.scss"></style>

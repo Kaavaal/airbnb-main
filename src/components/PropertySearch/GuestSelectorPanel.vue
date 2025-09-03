@@ -94,17 +94,21 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { PropType } from 'vue'
+import type { IGuestCounts } from '@/types/interfaces'
+
 const props = defineProps({
   initialCounts: {
-    type: Object,
+    type: Object as PropType<IGuestCounts>,
     required: true,
   },
 })
 
-const emit = defineEmits(['increment', 'decrement'])
+const emit = defineEmits<{
+  (e: 'increment', payload: { type: keyof IGuestCounts; operation: 'increment' }): void
+  (e: 'decrement', payload: { type: keyof IGuestCounts; operation: 'decrement' }): void
+}>()
 </script>
 
-<style lang="scss" scoped>
-@import './GuestSelectorPanel.scss';
-</style>
+<style lang="scss" scoped src="./GuestSelectorPanel.scss"></style>

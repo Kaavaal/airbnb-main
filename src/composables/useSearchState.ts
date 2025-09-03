@@ -1,23 +1,30 @@
 import { ref, reactive, computed } from 'vue'
 import { format } from 'date-fns'
+import type { IGuestCounts, ISearchDates, IUseSearchState } from '@/types/interfaces'
 
-export function useSearchState() {
+export function useSearchState(): IUseSearchState {
   const searchQuery = ref('')
 
-  const dates = reactive({
+  const dates = reactive<ISearchDates>({
     checkin: null,
     checkout: null,
   })
 
-  const guestCounts = reactive({
+  const guestCounts = reactive<IGuestCounts>({
     adults: 1,
     children: 0,
     infants: 0,
     pets: 0,
   })
 
-  const handleGuestChange = ({ type, operation }) => {
-    const limits = {
+  const handleGuestChange = ({
+    type,
+    operation,
+  }: {
+    type: keyof IGuestCounts
+    operation: 'increment' | 'decrement'
+  }) => {
+    const limits: Record<keyof IGuestCounts, number> = {
       adults: 1,
       children: 0,
       infants: 0,
@@ -34,10 +41,10 @@ export function useSearchState() {
     }
   }
 
-  const handleDateUpdate = (selectedDates) => {
-    if (selectedDates) {
+  const handleDateUpdate = (selectedDates: Date[] | null) => {
+    if (selectedDates && selectedDates[0]) {
       dates.checkin = selectedDates[0]
-      dates.checkout = selectedDates[1]
+      dates.checkout = selectedDates[1] || null
     } else {
       dates.checkin = null
       dates.checkout = null

@@ -1,5 +1,4 @@
 export const mockProperties = [
-  // Existing 30 properties...
   {
     id: 1,
     imageUrl:

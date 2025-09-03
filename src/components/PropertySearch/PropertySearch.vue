@@ -90,7 +90,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useSearchState } from '@/composables/useSearchState'
 import { useClickOutside } from '@/composables/useClickOutside'
@@ -99,13 +99,13 @@ import { usePropertyStore } from '@/stores/propertyStore'
 import GuestSelectorPanel from '@/components/PropertySearch/GuestSelectorPanel.vue'
 import DatePickerPanel from '@/components/DatePickerPanel/DatePickerPanel.vue'
 
-const activeSection = ref(null)
-const searchContainerRef = ref(null)
+const activeSection = ref<string | null>(null)
+const searchContainerRef = ref<HTMLElement | null>(null)
 const propertyStore = usePropertyStore()
 
 const searchState = useSearchState()
 
-const setActiveSection = (sectionName) => {
+const setActiveSection = (sectionName: string) => {
   activeSection.value = activeSection.value === sectionName ? null : sectionName
 }
 
@@ -113,8 +113,8 @@ const executeSearch = () => {
   propertyStore.applyFilters({
     searchQuery: searchState.searchQuery.value,
     guests: searchState.guestCounts.adults + searchState.guestCounts.children,
-    checkin: searchState.dates.checkin,
-    checkout: searchState.dates.checkout,
+    checkin: searchState.dateRange.value[0],
+    checkout: searchState.dateRange.value[1],
   })
   activeSection.value = null
 }
@@ -124,6 +124,4 @@ useClickOutside(searchContainerRef, () => {
 })
 </script>
 
-<style lang="scss" scoped>
-@import '@/components/PropertySearch/PropertySearch.scss';
-</style>
+<style lang="scss" scoped src="./PropertySearch.scss"></style>

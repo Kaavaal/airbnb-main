@@ -33,12 +33,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { usePropertyStore } from '@/stores/propertyStore'
 import PropertyCard from '@/components/PropertyCard/PropertyCard.vue'
+import type { IProperty } from '@/types/interfaces'
 
-defineEmits(['showDetails'])
+defineEmits<{
+  (e: 'showDetails', payload: IProperty): void
+}>()
 
 const store = usePropertyStore()
 

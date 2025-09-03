@@ -5,7 +5,7 @@
       <div v-if="property.isGuestFavorite" class="guest-favorite-badge">Guest favorite</div>
       <button class="like-button" @click.stop="toggleLike">
         <svg
-          xmlns="http://www.w.w3.org/2000/svg"
+          xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 32 32"
           class="heart-icon"
           :class="{ liked: isLiked }"
@@ -34,19 +34,23 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import type { PropType } from 'vue'
+import type { IProperty } from '@/types/interfaces'
 
 defineProps({
   property: {
-    type: Object,
+    type: Object as PropType<IProperty>,
     required: true,
   },
 })
 
-const emit = defineEmits(['openModal'])
+defineEmits<{
+  (e: 'openModal', payload: IProperty): void
+}>()
 
-const isLiked = ref(false)
+const isLiked = ref<boolean>(false)
 
 const toggleLike = () => {
   isLiked.value = !isLiked.value

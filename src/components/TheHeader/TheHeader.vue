@@ -1,12 +1,14 @@
 <template>
   <header class="app-header">
     <div class="top-bar">
-      <div class="left-section" @click="reloadPage">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg"
-          alt="Airbnb Logo"
-          class="logo"
-        />
+      <div class="left-section">
+        <a href="#" @click.prevent="reloadPage" class="logo-link">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg"
+            alt="Airbnb Logo"
+            class="logo"
+          />
+        </a>
       </div>
       <div class="center-section">
         <nav class="navigation">
@@ -126,12 +128,16 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import type { Ref } from 'vue'
 import PropertySearch from '@/components/PropertySearch/PropertySearch.vue'
 
-const activeLink = ref('Homes')
-const setActiveLink = (linkName) => {
+type NavLink = 'Homes' | 'Experiences' | 'Services'
+
+const activeLink = ref<NavLink>('Homes')
+
+const setActiveLink = (linkName: NavLink) => {
   activeLink.value = linkName
 }
 
@@ -140,6 +146,4 @@ const reloadPage = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-@import './TheHeader.scss';
-</style>
+<style lang="scss" scoped src="./TheHeader.scss"></style>
