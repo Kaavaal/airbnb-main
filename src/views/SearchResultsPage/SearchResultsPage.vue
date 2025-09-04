@@ -7,12 +7,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import PropertyList from '@/components/PropertyList/PropertyList.vue'
 import PropertyModal from '@/components/PropertyModal/PropertyModal.vue'
 import type { IProperty } from '@/types/interfaces'
+import { usePropertyStore } from '@/stores/propertyStore'
 
 const selectedProperty = ref<IProperty | null>(null)
+const store = usePropertyStore()
 
 const openModal = (property: IProperty) => {
   selectedProperty.value = property
@@ -21,6 +23,10 @@ const openModal = (property: IProperty) => {
 const closeModal = () => {
   selectedProperty.value = null
 }
+
+onMounted(() => {
+  store.fetchProperties()
+})
 </script>
 
 <style lang="scss" scoped src="./SearchResultsPage.scss"></style>

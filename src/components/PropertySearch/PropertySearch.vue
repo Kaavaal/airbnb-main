@@ -61,7 +61,8 @@
     />
     <DatePickerPanel
       v-if="activeSection === 'checkin' || activeSection === 'checkout'"
-      v-model="searchState.dateRange.value"
+      :initial-dates="searchState.dateRange.value"
+      @update-dates="searchState.handleDateUpdate"
     />
     <LocationPanel
       v-if="activeSection === 'where'"

@@ -2,9 +2,9 @@
 
 .location-panel {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 12px);
   left: 0;
-  width: 400px;
+  width: 500px;
   background-color: $white;
   border-radius: 32px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.2);
@@ -16,6 +16,8 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  max-height: 320px;
+  overflow-y: auto;
 }
 
 .location-item {
@@ -60,4 +62,3 @@
   color: $text-color-secondary;
   text-align: center;
 }
-

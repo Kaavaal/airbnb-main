@@ -52,6 +52,7 @@ import IconExperience from '@/components/icons/IconExperience.vue'
 import IconService from '@/components/icons/IconService.vue'
 import IconGlobe from '@/components/icons/IconGlobe.vue'
 import IconHamburger from '@/components/icons/IconHamburger.vue'
+import { usePropertyStore } from '@/stores/propertyStore'
 
 type NavLinkName = 'Homes' | 'Experiences' | 'Services'
 
@@ -60,6 +61,8 @@ interface NavLink {
   text: string
   icon: Component
 }
+
+const store = usePropertyStore()
 
 const navLinks: NavLink[] = [
   { id: 'Homes', text: 'Homes', icon: IconHome },
@@ -71,6 +74,7 @@ const activeLink = ref<NavLinkName>('Homes')
 
 const setActiveLink = (linkName: NavLinkName) => {
   activeLink.value = linkName
+  store.fetchProperties()
 }
 
 const reloadPage = () => {

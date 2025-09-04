@@ -1,23 +1,28 @@
 <template>
-  <div v-if="paginatedProperties.length > 0">
-    <div class="property-list">
-      <PropertyCard
-        v-for="property in paginatedProperties"
-        :key="property.id"
-        :property="property"
-        @open-modal="$emit('showDetails', property)"
-      />
+  <div class="property-list-wrapper">
+    <Loader v-if="store.isLoading" />
+
+    <div v-else-if="paginatedProperties.length > 0">
+      <div class="property-list">
+        <PropertyCard
+          v-for="property in paginatedProperties"
+          :key="property.id"
+          :property="property"
+          @open-modal="$emit('showDetails', property)"
+        />
+      </div>
+      <div class="load-more-container" v-if="hasMore">
+        <button @click="loadMore" class="load-more-button">
+          <span>Show More</span>
+          <IconChevronRight />
+        </button>
+      </div>
     </div>
-    <div class="load-more-container" v-if="hasMore">
-      <button @click="loadMore" class="load-more-button">
-        <span>Show More</span>
-        <IconChevronRight />
-      </button>
+
+    <div v-else class="no-results">
+      <h3>No exact matches</h3>
+      <p>Try changing or removing some of your filters.</p>
     </div>
-  </div>
-  <div v-else class="no-results">
-    <h3>No exact matches</h3>
-    <p>Try changing or removing some of your filters.</p>
   </div>
 </template>
 
@@ -27,6 +32,7 @@ import type { Ref, ComputedRef } from 'vue'
 import { usePropertyStore } from '@/stores/propertyStore'
 import PropertyCard from '@/components/PropertyCard/PropertyCard.vue'
 import IconChevronRight from '@/components/icons/IconChevronRight.vue'
+import Loader from '@/components/Loader.vue'
 import type { IProperty } from '@/types/interfaces'
 
 defineEmits<{

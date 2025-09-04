@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { mockProperties } from '@/data/mockProperties.ts'
+import { mockProperties } from '@/data/mockProperties'
 import { isWithinInterval } from 'date-fns'
 import type { IProperty, IFilters } from '@/types/interfaces'
 import type { Ref } from 'vue'
 
 export const usePropertyStore = defineStore('property', () => {
-  const properties: Ref<IProperty[]> = ref(mockProperties as IProperty[])
+  const properties: Ref<IProperty[]> = ref([])
+  const isLoading = ref(false)
 
   const filters = ref<IFilters>({
     searchQuery: '',
@@ -16,6 +17,7 @@ export const usePropertyStore = defineStore('property', () => {
   })
 
   const filteredProperties = computed(() => {
+    // Эта логика остается без изменений
     return properties.value.filter((property) => {
       const searchLower = filters.value.searchQuery.toLowerCase()
       const matchesSearch =
@@ -45,13 +47,28 @@ export const usePropertyStore = defineStore('property', () => {
   })
 
   function applyFilters(newFilters: Partial<IFilters>) {
-    filters.value = { ...filters.value, ...newFilters }
+    isLoading.value = true
+
+    setTimeout(() => {
+      filters.value = { ...filters.value, ...newFilters }
+      isLoading.value = false
+    }, 500)
+  }
+
+  function fetchProperties() {
+    isLoading.value = true
+    setTimeout(() => {
+      properties.value = mockProperties as IProperty[]
+      isLoading.value = false
+    }, 500)
   }
 
   return {
     properties,
     filters,
+    isLoading,
     filteredProperties,
     applyFilters,
+    fetchProperties,
   }
 })
