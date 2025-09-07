@@ -25,16 +25,17 @@
           </a>
         </nav>
       </div>
-      <div class="right-section">
+      <div class="right-section" ref="profileSectionRef">
         <div class="user-profile">
           <span class="host-link">Become a host</span>
           <button class="icon-button">
             <IconGlobe />
           </button>
-          <button class="menu-button">
+          <button class="menu-button" @click="toggleProfileDropdown">
             <IconHamburger />
           </button>
         </div>
+        <ProfileDropdown v-if="isProfileDropdownOpen" />
       </div>
     </div>
     <div class="bottom-bar">
@@ -52,7 +53,9 @@ import IconExperience from '@/components/icons/IconExperience.vue'
 import IconService from '@/components/icons/IconService.vue'
 import IconGlobe from '@/components/icons/IconGlobe.vue'
 import IconHamburger from '@/components/icons/IconHamburger.vue'
+import ProfileDropdown from './ProfileDropdown.vue'
 import { usePropertyStore } from '@/stores/propertyStore'
+import { useClickOutside } from '@/composables/useClickOutside'
 
 type NavLinkName = 'Homes' | 'Experiences' | 'Services'
 
@@ -71,6 +74,8 @@ const navLinks: NavLink[] = [
 ]
 
 const activeLink = ref<NavLinkName>('Homes')
+const isProfileDropdownOpen = ref(false)
+const profileSectionRef = ref<HTMLElement | null>(null)
 
 const setActiveLink = (linkName: NavLinkName) => {
   activeLink.value = linkName
@@ -80,6 +85,14 @@ const setActiveLink = (linkName: NavLinkName) => {
 const reloadPage = () => {
   window.location.reload()
 }
+
+const toggleProfileDropdown = () => {
+  isProfileDropdownOpen.value = !isProfileDropdownOpen.value
+}
+
+useClickOutside(profileSectionRef, () => {
+  isProfileDropdownOpen.value = false
+})
 </script>
 
 <style lang="scss" scoped src="./TheHeader.scss"></style>

@@ -22,7 +22,6 @@
 
 .left-section {
   justify-self: start;
-  cursor: pointer;
 }
 
 .center-section {
@@ -31,6 +30,7 @@
 
 .right-section {
   justify-self: end;
+  position: relative;
 }
 
 .bottom-bar {
