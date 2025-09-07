@@ -17,7 +17,6 @@ export const usePropertyStore = defineStore('property', () => {
   })
 
   const filteredProperties = computed(() => {
-    // Эта логика остается без изменений
     return properties.value.filter((property) => {
       const searchLower = filters.value.searchQuery.toLowerCase()
       const matchesSearch =

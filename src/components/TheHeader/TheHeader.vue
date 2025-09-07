@@ -25,17 +25,18 @@
           </a>
         </nav>
       </div>
-      <div class="right-section" ref="profileSectionRef">
+      <div class="right-section" ref="rightSectionRef">
         <div class="user-profile">
           <span class="host-link">Become a host</span>
-          <button class="icon-button">
+          <button class="icon-button" @click.stop="toggleDropdown('language')">
             <IconGlobe />
           </button>
-          <button class="menu-button" @click="toggleProfileDropdown">
+          <button class="menu-button" @click.stop="toggleDropdown('profile')">
             <IconHamburger />
           </button>
         </div>
-        <ProfileDropdown v-if="isProfileDropdownOpen" />
+        <ProfileDropdown v-if="activeDropdown === 'profile'" />
+        <LanguageSwitcher v-if="activeDropdown === 'language'" />
       </div>
     </div>
     <div class="bottom-bar">
@@ -54,10 +55,12 @@ import IconService from '@/components/icons/IconService.vue'
 import IconGlobe from '@/components/icons/IconGlobe.vue'
 import IconHamburger from '@/components/icons/IconHamburger.vue'
 import ProfileDropdown from './ProfileDropdown.vue'
+import LanguageSwitcher from './LanguageSwitcher.vue'
 import { usePropertyStore } from '@/stores/propertyStore'
 import { useClickOutside } from '@/composables/useClickOutside'
 
 type NavLinkName = 'Homes' | 'Experiences' | 'Services'
+type DropdownType = 'profile' | 'language' | null
 
 interface NavLink {
   id: NavLinkName
@@ -74,8 +77,8 @@ const navLinks: NavLink[] = [
 ]
 
 const activeLink = ref<NavLinkName>('Homes')
-const isProfileDropdownOpen = ref(false)
-const profileSectionRef = ref<HTMLElement | null>(null)
+const activeDropdown = ref<DropdownType>(null)
+const rightSectionRef = ref<HTMLElement | null>(null)
 
 const setActiveLink = (linkName: NavLinkName) => {
   activeLink.value = linkName
@@ -86,12 +89,16 @@ const reloadPage = () => {
   window.location.reload()
 }
 
-const toggleProfileDropdown = () => {
-  isProfileDropdownOpen.value = !isProfileDropdownOpen.value
+const toggleDropdown = (type: DropdownType) => {
+  if (activeDropdown.value === type) {
+    activeDropdown.value = null
+  } else {
+    activeDropdown.value = type
+  }
 }
 
-useClickOutside(profileSectionRef, () => {
-  isProfileDropdownOpen.value = false
+useClickOutside(rightSectionRef, () => {
+  activeDropdown.value = null
 })
 </script>
 

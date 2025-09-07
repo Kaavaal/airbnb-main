@@ -1,0 +1,38 @@
+@import '@/assets/styles/variables';
+
+.language-switcher {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background-color: $white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  width: 280px;
+  padding: 8px 0;
+  z-index: 100;
+  border: 1px solid $border-color;
+}
+
+.language-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.language-item a {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: $text-color-primary;
+  font-size: 14px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: $background-secondary;
+  }
+
+  .language-region {
+    color: $text-color-secondary;
+  }
+}
